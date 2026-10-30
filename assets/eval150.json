@@ -1,8 +1,0 @@
-{"pending": false, "title": "27 unseen prompts", "subtitle": "never used for tuning",
- "metrics": [
-  {"label": "Needed topics covered", "value": 98, "baseline": 45, "baselineLabel": "best baseline 45%"},
-  {"label": "Quotes word for word", "value": 100},
-  {"label": "Answers under 3 s", "value": 100},
-  {"label": "Irrelevant topics shown", "value": 0, "lowerIsBetter": true}
- ],
- "note": "real evaluation runs · same 27 prompts for every system"}

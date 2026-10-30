@@ -1,18 +1,28 @@
-.env
-# heavy or generated
-node_modules/
-tts-venv/
-models/
-out/
-snapshots/
-review/
-review-*/
-*.mp4
-*.wav
-*.mp3
-*.caf
-probe.png
-audio-*.txt
-# private material: voice recordings and screenshots of the app (they show the challenge letters)
-audio/
-assets/real/
+# This repo holds the visuals only: the film page, its engine, the chapters and the cover.
+*
+!.gitignore
+!README.md
+!film.html
+!film-*.html
+!thumbnail.html
+!engine.js
+!springs.js
+!serve.mjs
+!lines.json
+!timeline.json
+!chapters/
+chapters/*
+!chapters/*.js
+chapters/_old-*
+!assets/
+assets/*
+!assets/map.json
+!assets/fonts/
+!assets/fonts/**
+# timing and waveform shapes only (numbers, no sound)
+!audio/
+audio/*
+!audio/vo/
+audio/vo/*
+!audio/vo/durations.json
+!audio/vo/*.env.json
