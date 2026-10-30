@@ -24,12 +24,23 @@ does not work. Any static server works too, for example `python -m http.server 8
 
 | Key | Action |
 |---|---|
-| → · Space · Enter · click | Next slide (plays its animation; press again to skip to the end of it) |
+| → · Space · Enter · click | Next slide (its short animation plays; press again to skip it) |
 | ← · Backspace | Previous slide |
 | Home · End | First · last slide |
 | F | Fullscreen |
-| S | Subtitles on or off |
+| P | Presenter window: what to say on this slide and what comes next (put it on your own screen) |
+| N | The same speaker notes as an overlay on the slide |
 | `slides.html#5` | Open a given slide |
+
+## Giving the pitch
+
+1. Run `node present.mjs` and open the slides in Chrome or Edge.
+2. Press **P** and drag the presenter window to your laptop screen.
+3. Share or project the slides window and press **F** for fullscreen.
+4. Click or press → to move on; the presenter window follows.
+
+No slide animates longer than three seconds. On the doctor slides the quote appears at once and the
+soundwave keeps moving until you go on. There are no subtitles: you speak.
 
 `film.html` plays the whole film continuously with a scrubber.
 

@@ -20,7 +20,13 @@
   #title { flex: 1; color: #fff; }
   #count { font-variant-numeric: tabular-nums; }
   #dots { position: fixed; top: 0; left: 0; height: 4px; background: #5aa9ff; transition: width .3s; }
-  #help { position: fixed; top: 10px; right: 14px; color: rgba(255,255,255,0.55); font-size: 12px; }
+  #help { position: fixed; top: 10px; right: 14px; color: rgba(255,255,255,0.55); font-size: 12px; transition: opacity .6s; }
+  #help.gone { opacity: 0; }
+  #notes { position: fixed; left: 50%; bottom: 56px; transform: translateX(-50%); width: min(980px, calc(100vw - 32px));
+    box-sizing: border-box; padding: 14px 18px; border-radius: 10px; background: rgba(11,15,19,0.92); color: #fff;
+    font: 20px/1.45 system-ui, sans-serif; box-shadow: 0 8px 30px rgba(0,0,0,0.4); display: none; }
+  #notes.on { display: block; }
+  #notes small { display: block; color: #8796a0; font-size: 13px; margin-bottom: 4px; letter-spacing: .04em; text-transform: uppercase; }
 </style>
 <script src="springs.js"></script>
 <script src="engine.js"></script>
@@ -34,7 +40,8 @@
 <body>
 <div id="dots"></div>
 <div id="stage"><canvas id="c" aria-label="TORU presentation slide"></canvas></div>
-<div id="help">→ / click: next · ← back · F fullscreen · S subtitles</div>
+<div id="help">→ / click: next · ← back · F fullscreen · P presenter notes · N notes overlay</div>
+<div id="notes" role="note" aria-live="polite"><small>Say</small><span id="say"></span></div>
 <div id="hud">
   <button id="prev" aria-label="Previous slide">←</button>
   <button id="next" aria-label="Next slide">→</button>
@@ -47,7 +54,7 @@ const c = document.getElementById('c'); c.width = W; c.height = H;
 const g = c.getContext('2d');
 const c2 = document.createElement('canvas'); c2.width = W; c2.height = H;
 const g2 = c2.getContext('2d');
-let showSubs = true;
+const showSubs = false;   // a live pitch: the presenter speaks, so no subtitles
 
 // ---- the film's own frame renderer (same as film.html): section, subtitles, transitions ----
 function drawSection(ctx, sec, t) {
@@ -89,33 +96,54 @@ function renderFrame(t) {
 // ---- slides: each one plays its stretch of the film, then holds on the finished frame ----
 // [title, line it ends on (or a function of the timeline), needs the app screenshots]
 const PLAN = [
-  ['Eight letters, two minutes · Meet TORU', 'n02'],
-  ['MUDr. Monika Hromadová · anaesthesiologist', 'h01b'],
-  ['Import the patient, type the task', () => E.T.a02.s - 0.75, true],
-  ['Two seconds later: one screen', 'a02', true],
-  ['Contradictions · task · original letters', 'a03', true],
-  ['What comes first for this task', 'a04', true],
-  ['One click to the exact sentence', 'a05', true],
-  ['The records disagree: both sources', 'a06', true],
-  ['Missing information is explicit', 'a07', true],
-  ['Every letter by date, every fact by type', 'a08', true],
-  ['MUDr. Iveta Urban · surgeon', 'u01'],
-  ['Change the role: the GP view', 'r01'],
-  ['Built · running · secured', 'w01'],
-  ['15 of 15 correct, end to end', 's01'],
-  ['Against two baselines', 's02'],
-  ['False alarms, traceability, speed', 's03'],
-  ['Understanding unseen requests', 's04'],
-  ['Not working yet', 'x01'],
-  ['MUDr. Dalibor Kolieska · head of anaesthesiology', 'k01'],
-  ['Austria, Slovakia, Switzerland · next: a pilot', 'x02'],
-  ['TORU', () => E.S.end[1] - 0.05],
+  ['Eight letters, two minutes · Meet TORU', 'n02', false,
+    'Eight German letters. One patient. And two minutes before surgery to find what matters. That is the problem we solve. Meet TORU.'],
+  ['MUDr. Monika Hromadová · anaesthesiologist', 'h01b', false,
+    'Dr. Monika Hromadová, anaesthesiologist at NUDCH Bratislava, after trying it: blood thinners, allergies, heart function, all there, and she can see where each one came from.'],
+  ['Import the patient, type the task', () => E.T.a02.s - 0.75, true,
+    'The doctor imports the patient folder; name and date of birth fill in. Then they type their role and task in their own words.'],
+  ['Two seconds later: one screen', 'a02', true,
+    'Two seconds later: one screen.'],
+  ['Contradictions · task · original letters', 'a03', true,
+    'Contradictions on the left. What this task needs in the centre. The original letters on the right.'],
+  ['What comes first for this task', 'a04', true,
+    'For an anaesthetist, allergies, blood thinners, airway and heart function come first.'],
+  ['One click to the exact sentence', 'a05', true,
+    'Every fact links to its exact sentence. EF sixty percent: one click, and you read it in the original letter.'],
+  ['The records disagree: both sources', 'a06', true,
+    'When the records disagree, left or right carotid, TORU shows both sources side by side.'],
+  ['Missing information is explicit', 'a07', true,
+    'Missing information is explicit. Previous anaesthesia: not documented. TORU never guesses.'],
+  ['Every letter by date, every fact by type', 'a08', true,
+    'And the doctor can browse every letter by date, or every fact by type.'],
+  ['MUDr. Iveta Urban · surgeon', 'u01', false,
+    'Dr. Iveta Urban, surgeon at Ordensklinikum Linz: she does not have to trust a summary, she reads the original herself.'],
+  ['Change the role: the GP view', 'r01', false,
+    'Change the role and the screen changes. The GP gets diabetes drugs, HbA1c, and the weight loss, calculated.'],
+  ['Built · running · secured', 'w01', false,
+    'This is not a mock-up. It runs on a working backend. Names are removed before any AI call, and data is encrypted at rest.'],
+  ['15 of 15 correct, end to end', 's01', false,
+    'We tested the whole running system end to end: five challenge situations, fifteen of fifteen questions correct.'],
+  ['Against two baselines', 's02', false,
+    'One AI call with the whole record gets six. Simple rules get eight.'],
+  ['False alarms, traceability, speed', 's03', false,
+    'Zero false alarms. Every fact traceable to its passage, none invented. A typical answer takes under two seconds.'],
+  ['Understanding unseen requests', 's04', false,
+    'Where does the LLM help? On requests it has never seen, it lifts complete checklists from half to two thirds.'],
+  ['Not working yet', 'x01', false,
+    'What does not work yet: thirteen percent of unusual requests still miss an item, and there is no FHIR link to hospital systems.'],
+  ['MUDr. Dalibor Kolieska · head of anaesthesiology', 'k01', false,
+    'Dr. Dalibor Kolieska, head of anaesthesiology at Hospital Visp: seeing only the relevant information is useful, as long as it is well ordered.'],
+  ['Austria, Slovakia, Switzerland · next: a pilot', 'x02', false,
+    'Doctors in Austria, Slovakia and Switzerland tried TORU, and they want it. Next: a supervised pilot with clinicians.'],
+  ['TORU', () => E.S.end[1] - 0.05, false,
+    'TORU. Every fact links to its sentence. Thank you.'],
 ];
 let SLIDES = [];   // [{title, hold}]
 function buildSlides() {
   const ids = Object.keys(E.T);
   const hasPlates = Boolean(E.P && E.P['sit1-screen']);
-  SLIDES = PLAN.filter(([, , plates]) => !plates || hasPlates).map(([title, end]) => {
+  SLIDES = PLAN.filter(([, , plates]) => !plates || hasPlates).map(([title, end, , say]) => {
     let hold;
     if (typeof end === 'function') hold = end();
     else {
@@ -124,34 +152,89 @@ function buildSlides() {
       const sec = Object.values(E.S).find(([a, b]) => L.s >= a && L.s < b) ?? [0, Infinity];
       hold = Math.min(L.e + 0.35, sec[1] - 0.08, next ? next.s - 0.05 : Infinity);
     }
-    return { title, hold };
+    const doc = DOC_LINES[end] ? end : null;
+    return { title, hold, say, doc };
   });
 }
 
-let cur = 0, from = 0, to = 0, t0 = 0, playing = false;
+// doctor slides: the quote appears whole at once; only the soundwave keeps moving, until the next key
+const DOC_LINES = { h01b: 'doc1', u01: 'doc2', k01: 'doc3' };
+const WAVE = { x: 960, y: 650, w: 520, h: 90 };
+const MAX_PLAY = 3.0;   // no slide animates longer than this: longer stretches play faster and start later
+const held = document.createElement('canvas'); held.width = W; held.height = H;
+let waveT0 = 0;
+
+let cur = 0, from = 0, to = 0, t0 = 0, rate = 1, playing = false;
+function hold(k) {
+  // freeze the slide's final frame; a doctor slide keeps its soundwave moving on top of it
+  const sl = SLIDES[k];
+  renderFrame(sl.hold);
+  if (sl.doc) { held.getContext('2d').drawImage(c, 0, 0); waveT0 = performance.now(); }
+}
+function play(a, b, k) {
+  const sl = SLIDES[k];
+  if (sl.doc) b = Math.min(b, E.S[DOC_LINES[sl.doc]][0] + 0.55);   // only the dip into the clip
+  const seg = b - a;
+  rate = seg > MAX_PLAY ? Math.min(2.5, seg / MAX_PLAY) : 1;
+  from = Math.max(a, b - MAX_PLAY * rate); to = b; t0 = performance.now(); playing = true;
+}
 const $ = (id) => document.getElementById(id);
 function hud() {
   $('title').textContent = SLIDES[cur].title;
   $('count').textContent = `${cur + 1} / ${SLIDES.length}`;
   $('dots').style.width = `${((cur + 1) / SLIDES.length) * 100}%`;
+  $('say').textContent = SLIDES[cur].say ?? '';
+  presenter();
   const h = '#' + (cur + 1); if (location.hash !== h) history.replaceState(null, '', h);
+}
+// presenter window (P): what to say now and next, on a second screen the audience does not see
+let pw = null;
+function presenter() {
+  if (!pw || pw.closed) return;
+  const s = SLIDES[cur], n = SLIDES[cur + 1];
+  pw.document.getElementById('n').textContent = `${cur + 1} / ${SLIDES.length} · ${s.title}`;
+  pw.document.getElementById('say').textContent = s.say ?? '';
+  pw.document.getElementById('next').textContent = n ? `Next: ${n.title}` : 'Last slide';
+}
+function openPresenter() {
+  pw = window.open('', 'toru-presenter', 'width=760,height=420');
+  if (!pw) return;
+  pw.document.title = 'TORU · presenter notes';
+  pw.document.body.innerHTML = `<style>body{margin:0;padding:24px 28px;background:#0b0f13;color:#fff;font:26px/1.45 system-ui,sans-serif}
+    #n{color:#5aa9ff;font-size:16px;letter-spacing:.04em;margin-bottom:10px}#next{color:#8796a0;font-size:18px;margin-top:18px}
+    p{margin:0}small{color:#8796a0;font-size:14px;display:block;margin-top:22px}</style>
+    <div id="n"></div><p id="say"></p><div id="next"></div><small>Keys work here too: → next · ← back</small>`;
+  pw.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+  });
+  presenter();
 }
 function go(k, animate) {
   k = Math.max(0, Math.min(SLIDES.length - 1, k));
   // moving one slide forward plays the film between the two holds; any other jump shows the held frame
-  if (animate && k === cur + 1) { from = SLIDES[cur].hold; to = SLIDES[k].hold; t0 = performance.now(); playing = true; }
-  else { playing = false; renderFrame(SLIDES[k].hold); }
   cur = k; hud();
+  if (animate) play(SLIDES[k - 1].hold, SLIDES[k].hold, k);
+  else { playing = false; hold(k); }
 }
 function next() {
-  if (playing) { playing = false; renderFrame(to); return; }   // a click during playback finishes the slide
+  if (playing) { playing = false; hold(cur); return; }   // a click during an animation finishes the slide
+  if (cur === SLIDES.length - 1) return;
   go(cur + 1, true);
 }
 function prev() { go(cur - 1, false); }
 function loop() {
+  const now = performance.now();
   if (playing) {
-    const t = from + (performance.now() - t0) / 1000;
-    if (t >= to) { playing = false; renderFrame(to); } else renderFrame(t);
+    const t = from + ((now - t0) / 1000) * rate;
+    if (t >= to) { playing = false; hold(cur); } else renderFrame(t);
+  } else if (SLIDES[cur]?.doc) {
+    // the held quote with a live soundwave, looping through the doctor's recording
+    const L = E.T[SLIDES[cur].doc], tw = L.s + (((now - waveT0) / 1000) % L.d);
+    g.drawImage(held, 0, 0);
+    g.fillStyle = '#0b0f13'; g.fillRect(WAVE.x - WAVE.w / 2 - 12, WAVE.y - WAVE.h / 2 - 12, WAVE.w + 24, WAVE.h + 24);
+    E.waveform(g, SLIDES[cur].doc, tw, WAVE.x, WAVE.y, WAVE.w, WAVE.h, '#ffffff');
+    E.reset(g);
   }
   requestAnimationFrame(loop);
 }
@@ -159,11 +242,12 @@ function loop() {
 E.load().then(() => {
   buildSlides();
   const start = Math.max(0, Math.min(SLIDES.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
-  if (start === 0) { from = 0; to = SLIDES[0].hold; t0 = performance.now(); playing = true; cur = 0; hud(); }
+  if (start === 0) { cur = 0; hud(); play(0, SLIDES[0].hold, 0); }
   else go(start, false);
   requestAnimationFrame(loop);
   window.addEventListener('hashchange', () => { const k = (parseInt(location.hash.slice(1), 10) || 1) - 1; if (k !== cur) go(k, false); });
   $('stage').addEventListener('click', next);
+  setTimeout(() => $('help').classList.add('gone'), 6000);   // the key hint fades once the pitch starts
   $('next').addEventListener('click', (e) => { e.stopPropagation(); next(); });
   $('prev').addEventListener('click', (e) => { e.stopPropagation(); prev(); });
   window.addEventListener('keydown', (e) => {
@@ -172,7 +256,8 @@ E.load().then(() => {
     else if (e.key === 'Home') go(0, false);
     else if (e.key === 'End') go(SLIDES.length - 1, false);
     else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
-    else if (e.key === 's' || e.key === 'S') { showSubs = !showSubs; if (!playing) renderFrame(SLIDES[cur].hold); }
+    else if (e.key === 'n' || e.key === 'N') $('notes').classList.toggle('on');
+    else if (e.key === 'p' || e.key === 'P') openPresenter();
   });
 });
 </script>
