@@ -1,0 +1,18 @@
+.env
+# heavy or generated
+node_modules/
+tts-venv/
+models/
+out/
+snapshots/
+review/
+review-*/
+*.mp4
+*.wav
+*.mp3
+*.caf
+probe.png
+audio-*.txt
+# private material: voice recordings and screenshots of the app (they show the challenge letters)
+audio/
+assets/real/

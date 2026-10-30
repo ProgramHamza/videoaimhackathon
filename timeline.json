@@ -1,0 +1,884 @@
+{
+ "T": {
+  "n01": {
+   "s": 0.4,
+   "e": 2.944,
+   "d": 2.544,
+   "text": "Eight German letters. One patient.",
+   "who": "N",
+   "keys": [
+    "Eight",
+    "One"
+   ]
+  },
+  "n02": {
+   "s": 3.194,
+   "e": 6.942,
+   "d": 3.748,
+   "text": "Two minutes to find what matters before surgery. Meet TORU.",
+   "who": "N",
+   "keys": [
+    "TORU"
+   ]
+  },
+  "h01b": {
+   "s": 7.3420000000000005,
+   "e": 14.77,
+   "d": 7.428,
+   "text": "Blood thinners, allergies, heart function. I can see everything, and also where it came from, which is nice.",
+   "who": "H",
+   "keys": []
+  },
+  "a01": {
+   "s": 15.32,
+   "e": 18.174,
+   "d": 2.854,
+   "text": "In TORU, enter the patient, then the task.",
+   "who": "N",
+   "keys": [
+    "patient",
+    "task"
+   ]
+  },
+  "a02": {
+   "s": 22.374,
+   "e": 24.418,
+   "d": 2.044,
+   "text": "Two seconds later: one screen.",
+   "who": "N",
+   "keys": [
+    "Two seconds"
+   ]
+  },
+  "a03": {
+   "s": 24.817999999999998,
+   "e": 30.49,
+   "d": 5.672,
+   "text": "Contradictions on the left. What the task needs, in the centre. The original letters, on the right.",
+   "who": "N",
+   "keys": [
+    "Contradictions",
+    "centre",
+    "original letters"
+   ]
+  },
+  "a04": {
+   "s": 31.04,
+   "e": 34.988,
+   "d": 3.948,
+   "text": "For example: allergies, blood thinner, airway and heart function come first.",
+   "who": "N",
+   "keys": [
+    "first"
+   ]
+  },
+  "a05": {
+   "s": 35.438,
+   "e": 40.777,
+   "d": 5.339,
+   "text": "EF sixty percent. Where from? One click shows the exact sentence in the original letter.",
+   "who": "N",
+   "keys": [
+    "EF",
+    "One click",
+    "exact sentence"
+   ]
+  },
+  "a06": {
+   "s": 41.327,
+   "e": 46.336,
+   "d": 5.009,
+   "text": "The records disagree: left or right carotid? Both sources, side by side.",
+   "who": "N",
+   "keys": [
+    "disagree",
+    "side by side"
+   ]
+  },
+  "a07": {
+   "s": 46.836,
+   "e": 51.413,
+   "d": 4.577,
+   "text": "Missing information is explicit: previous anaesthesia, not documented.",
+   "who": "N",
+   "keys": [
+    "not documented"
+   ]
+  },
+  "a08": {
+   "s": 51.763,
+   "e": 54.899,
+   "d": 3.136,
+   "text": "Browse every letter by date, or every fact by type.",
+   "who": "N",
+   "keys": [
+    "by date",
+    "by type"
+   ]
+  },
+  "u01": {
+   "s": 55.749,
+   "e": 61.354,
+   "d": 5.605,
+   "text": "I don't have to trust a summary. I read the original myself.",
+   "who": "U",
+   "keys": []
+  },
+  "r01": {
+   "s": 61.754,
+   "e": 66.578,
+   "d": 4.824,
+   "text": "Change the role: the GP gets diabetes drugs, HbA1c and a weight loss.",
+   "who": "N",
+   "keys": [
+    "role",
+    "GP",
+    "calculated"
+   ]
+  },
+  "w01": {
+   "s": 67.078,
+   "e": 73.884,
+   "d": 6.806,
+   "text": "TORU is not a mock-up. It has a working backend. Names removed before any AI call, data encrypted.",
+   "who": "N",
+   "keys": [
+    "working backend",
+    "encrypted",
+    "checked"
+   ]
+  },
+  "s01": {
+   "s": 74.384,
+   "e": 79.291,
+   "d": 4.907,
+   "text": "We tested TORU end to end on the running system: fifteen of fifteen correct.",
+   "who": "N",
+   "keys": [
+    "fifteen of fifteen"
+   ]
+  },
+  "s02": {
+   "s": 79.691,
+   "e": 84.236,
+   "d": 4.545,
+   "text": "One AI call with the whole record: six. Simple rules: eight.",
+   "who": "N",
+   "keys": [
+    "six",
+    "eight"
+   ]
+  },
+  "s03": {
+   "s": 84.686,
+   "e": 90.94800000000001,
+   "d": 6.262,
+   "text": "Zero false alarms. Every fact traceable, none invented. Typical answer: under two seconds.",
+   "who": "N",
+   "keys": [
+    "Zero",
+    "none invented"
+   ]
+  },
+  "s04": {
+   "s": 91.44800000000001,
+   "e": 96.531,
+   "d": 5.083,
+   "text": "Why an LLM? On unseen requests, it lifts complete checklists from half to two thirds.",
+   "who": "N",
+   "keys": [
+    "half",
+    "two thirds"
+   ]
+  },
+  "x01": {
+   "s": 97.131,
+   "e": 103.962,
+   "d": 6.831,
+   "text": "Not working yet: thirteen percent of unusual requests still miss an item. And there is no FHIR link.",
+   "who": "N",
+   "keys": [
+    "Not working yet"
+   ]
+  },
+  "k01": {
+   "s": 104.412,
+   "e": 109.97,
+   "d": 5.558,
+   "text": "Seeing only relevant info is useful. It just needs to be nicely ordered, so we don't get lost.",
+   "who": "K",
+   "keys": []
+  },
+  "x02": {
+   "s": 110.42,
+   "e": 116.541,
+   "d": 6.121,
+   "text": "Doctors in Austria, Slovakia and Switzerland tried TORU, and want it. Next: a supervised pilot.",
+   "who": "N",
+   "keys": [
+    "Austria",
+    "Slovakia",
+    "Switzerland",
+    "Next"
+   ]
+  }
+ },
+ "S": {
+  "open": [
+   0,
+   6.992000000000001
+  ],
+  "doc1": [
+   6.992000000000001,
+   15.27
+  ],
+  "demo1": [
+   15.27,
+   35.038000000000004
+  ],
+  "demo2": [
+   35.038000000000004,
+   55.399
+  ],
+  "doc2": [
+   55.399,
+   61.854
+  ],
+  "role": [
+   61.854,
+   66.678
+  ],
+  "how": [
+   66.678,
+   73.984
+  ],
+  "scores": [
+   73.984,
+   96.681
+  ],
+  "next": [
+   96.681,
+   104.06200000000001
+  ],
+  "doc3": [
+   104.06200000000001,
+   110.47
+  ],
+  "map": [
+   110.47,
+   117.041
+  ],
+  "end": [
+   117.041,
+   118.841
+  ]
+ },
+ "duration": 118.841,
+ "cues": [
+  {
+   "t": 0.27,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 0.638,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 1.006,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 1.374,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 1.742,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 2.11,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 2.478,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 2.846,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 3.194,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 3.4939999999999998,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 3.794,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 4.093999999999999,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 4.394,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 4.694,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 4.994,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 5.2940000000000005,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 15.32,
+   "kind": "rise",
+   "gain": 0.5
+  },
+  {
+   "t": 15.42,
+   "kind": "pop",
+   "gain": 0.6
+  },
+  {
+   "t": 16.27,
+   "kind": "whoosh",
+   "gain": 0.5
+  },
+  {
+   "t": 18.47,
+   "kind": "whoosh",
+   "gain": 0.3
+  },
+  {
+   "t": 18.92,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 19.12,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 19.32,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 19.52,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 19.72,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 19.92,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 20.12,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 20.32,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 20.52,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 20.72,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 20.92,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 21.12,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 21.77,
+   "kind": "click",
+   "gain": 0.7
+  },
+  {
+   "t": 22.124,
+   "kind": "whoosh",
+   "gain": 0.6
+  },
+  {
+   "t": 22.624,
+   "kind": "hit",
+   "gain": 0.7
+  },
+  {
+   "t": 22.724,
+   "kind": "chime",
+   "gain": 0.4
+  },
+  {
+   "t": 24.717999999999996,
+   "kind": "pop",
+   "gain": 0.5
+  },
+  {
+   "t": 25.945821176470584,
+   "kind": "pop",
+   "gain": 0.5
+  },
+  {
+   "t": 28.094508235294114,
+   "kind": "pop",
+   "gain": 0.5
+  },
+  {
+   "t": 30.79,
+   "kind": "whoosh",
+   "gain": 0.4
+  },
+  {
+   "t": 31.700392727272728,
+   "kind": "tick",
+   "gain": 0.5
+  },
+  {
+   "t": 32.03058909090909,
+   "kind": "tick",
+   "gain": 0.5
+  },
+  {
+   "t": 32.69098181818182,
+   "kind": "tick",
+   "gain": 0.5
+  },
+  {
+   "t": 33.35137454545455,
+   "kind": "tick",
+   "gain": 0.5
+  },
+  {
+   "t": 35.088,
+   "kind": "whoosh",
+   "gain": 0.5
+  },
+  {
+   "t": 35.438,
+   "kind": "tick",
+   "gain": 0.5
+  },
+  {
+   "t": 36.441732,
+   "kind": "pop",
+   "gain": 0.6
+  },
+  {
+   "t": 37.545464,
+   "kind": "click",
+   "gain": 0.8
+  },
+  {
+   "t": 37.995464000000005,
+   "kind": "chime",
+   "gain": 0.45
+  },
+  {
+   "t": 40.777,
+   "kind": "whoosh",
+   "gain": 0.6
+  },
+  {
+   "t": 42.126999999999995,
+   "kind": "tick",
+   "gain": 0.45
+  },
+  {
+   "t": 42.827,
+   "kind": "hit",
+   "gain": 0.6
+  },
+  {
+   "t": 44.236,
+   "kind": "tick",
+   "gain": 0.5
+  },
+  {
+   "t": 46.336,
+   "kind": "whoosh",
+   "gain": 0.5
+  },
+  {
+   "t": 46.936,
+   "kind": "thud",
+   "gain": 0.6
+  },
+  {
+   "t": 51.312999999999995,
+   "kind": "whoosh",
+   "gain": 0.5
+  },
+  {
+   "t": 53.136919999999996,
+   "kind": "click",
+   "gain": 0.7
+  },
+  {
+   "t": 53.33692,
+   "kind": "whoosh",
+   "gain": 0.4
+  },
+  {
+   "t": 55.099000000000004,
+   "kind": "click",
+   "gain": 0.7
+  },
+  {
+   "t": 55.299,
+   "kind": "pop",
+   "gain": 0.45
+  },
+  {
+   "t": 62.004,
+   "kind": "whoosh",
+   "gain": 0.5
+  },
+  {
+   "t": 63.80234461538461,
+   "kind": "pop",
+   "gain": 0.5
+  },
+  {
+   "t": 64.304,
+   "kind": "whoosh",
+   "gain": 0.35
+  },
+  {
+   "t": 64.48512615384615,
+   "kind": "pop",
+   "gain": 0.5
+  },
+  {
+   "t": 65.50929846153846,
+   "kind": "pop",
+   "gain": 0.55
+  },
+  {
+   "t": 66.728,
+   "kind": "whoosh",
+   "gain": 0.4
+  },
+  {
+   "t": 69.51303555555556,
+   "kind": "type",
+   "gain": 0.35
+  },
+  {
+   "t": 69.76089777777779,
+   "kind": "pop",
+   "gain": 0.45
+  },
+  {
+   "t": 70.45662222222224,
+   "kind": "pop",
+   "gain": 0.45
+  },
+  {
+   "t": 70.90448444444445,
+   "kind": "tick",
+   "gain": 0.45
+  },
+  {
+   "t": 72.54379555555556,
+   "kind": "pop",
+   "gain": 0.45
+  },
+  {
+   "t": 72.99165777777777,
+   "kind": "click",
+   "gain": 0.6
+  },
+  {
+   "t": 75.35138,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 77.28614,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.35523857142857,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.42433714285714,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.49343571428571,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.56253428571429,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.63163285714286,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.70073142857143,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.76983,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.83892857142857,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.90802714285714,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 77.9771257142857,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 78.04622428571429,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 78.11532285714286,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 78.18442142857143,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 78.25352,
+   "kind": "pop",
+   "gain": 0.15
+  },
+  {
+   "t": 78.25352,
+   "kind": "hit",
+   "gain": 0.5
+  },
+  {
+   "t": 79.59100000000001,
+   "kind": "whoosh",
+   "gain": 0.25
+  },
+  {
+   "t": 79.641,
+   "kind": "whoosh",
+   "gain": 0.25
+  },
+  {
+   "t": 79.691,
+   "kind": "whoosh",
+   "gain": 0.25
+  },
+  {
+   "t": 81.73625,
+   "kind": "hit",
+   "gain": 0.5
+  },
+  {
+   "t": 84.086,
+   "kind": "hit",
+   "gain": 0.5
+  },
+  {
+   "t": 84.436,
+   "kind": "whoosh",
+   "gain": 0.25
+  },
+  {
+   "t": 84.786,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 85.96547076923078,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 87.29494153846154,
+   "kind": "pop",
+   "gain": 0.3
+  },
+  {
+   "t": 88.4812553846154,
+   "kind": "tick",
+   "gain": 0.15
+  },
+  {
+   "t": 88.64125538461539,
+   "kind": "tick",
+   "gain": 0.15
+  },
+  {
+   "t": 88.80125538461539,
+   "kind": "tick",
+   "gain": 0.15
+  },
+  {
+   "t": 88.9612553846154,
+   "kind": "tick",
+   "gain": 0.15
+  },
+  {
+   "t": 89.1212553846154,
+   "kind": "tick",
+   "gain": 0.15
+  },
+  {
+   "t": 91.19800000000001,
+   "kind": "whoosh",
+   "gain": 0.25
+  },
+  {
+   "t": 91.64800000000001,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 91.86800000000001,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 92.08800000000001,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 92.308,
+   "kind": "tick",
+   "gain": 0.12
+  },
+  {
+   "t": 95.50084533333334,
+   "kind": "chime",
+   "gain": 0.35
+  },
+  {
+   "t": 98.12841999999999,
+   "kind": "thud",
+   "gain": 0.18
+  },
+  {
+   "t": 102.31809999999999,
+   "kind": "thud",
+   "gain": 0.18
+  },
+  {
+   "t": 111.18716533333334,
+   "kind": "pop",
+   "gain": 0.4
+  },
+  {
+   "t": 111.57074800000001,
+   "kind": "pop",
+   "gain": 0.4
+  },
+  {
+   "t": 111.60716533333334,
+   "kind": "tick",
+   "gain": 0.3
+  },
+  {
+   "t": 111.74716533333334,
+   "kind": "tick",
+   "gain": 0.3
+  },
+  {
+   "t": 111.88716533333334,
+   "kind": "tick",
+   "gain": 0.3
+  },
+  {
+   "t": 112.07074800000001,
+   "kind": "tick",
+   "gain": 0.3
+  },
+  {
+   "t": 112.33791333333333,
+   "kind": "pop",
+   "gain": 0.4
+  },
+  {
+   "t": 112.81791333333334,
+   "kind": "tick",
+   "gain": 0.3
+  },
+  {
+   "t": 114.63940933333333,
+   "kind": "chime",
+   "gain": 0.3
+  },
+  {
+   "t": 117.06099999999999,
+   "kind": "chime",
+   "gain": 0.5
+  }
+ ]
+}

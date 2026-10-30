@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>thumbnail</title>
+<style>
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-wght-normal.woff2) format('woff2'); font-weight: 100 1000; }
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-ext-wght-normal.woff2) format('woff2'); font-weight: 100 1000; unicode-range: U+0100-02AF; }
+  @font-face { font-family: 'IBM Plex Mono Film'; src: url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2'); font-weight: 500; }
+  html, body { margin: 0; background: #111; }
+</style>
+<script src="springs.js"></script>
+<script src="engine.js"></script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+// Thumbnail: one still frame, 1920x1080 (exported also at 1280x720).
+const c = document.getElementById('c'); c.width = 1920; c.height = 1080;
+const g = c.getContext('2d');
+window.FILM_DURATION = 1;
+window.renderFrame = () => {
+  const { C, text, rr, plate, ring, buddies } = E;
+  E.reset(g);
+  // ground: app grey with a soft blue light from the right
+  g.fillStyle = C.sidebar; g.fillRect(0, 0, 1920, 1080);
+  const glow = g.createRadialGradient(1420, 470, 60, 1420, 470, 900);
+  glow.addColorStop(0, 'rgba(90,169,255,0.28)'); glow.addColorStop(1, 'rgba(90,169,255,0)');
+  g.fillStyle = glow; g.fillRect(0, 0, 1920, 1080);
+
+  // the real app: the source letter with the cited sentence highlighted, tilted card
+  const m = E.BOX.efSource.mark;
+  g.save();
+  g.translate(1380, 470); g.rotate(-0.045); g.translate(-1380, -470);
+  const card = { x: 900, y: 120, w: 960, h: 700 };
+  const r = plate(g, 'sit1-ef-source', { cx: m.x + m.w / 2 + 40, cy: m.y + 30, vw: 640 }, card, { radius: 22, shadow: 70 });
+  const [mx, my] = r.map(m.x, m.y);
+  ring(g, mx, my, m.w * r.s, m.h * r.s, 1, C.link, 12, 6);
+  g.restore();
+
+  // the fact chip it came from, linked by a line to the sentence
+  const a = 'EF 60 %', b = '→ exact sentence';
+  const wa = E.measure(g, a, { size: 64, weight: 700 }), wb = E.measure(g, b, { size: 44, weight: 500 });
+  const cw = 40 + wa + 28 + wb + 40, cx = 1840 - cw, cy = 846;
+  g.save();
+  rr(g, cx, cy, cw, 116, 20); g.fillStyle = '#fff'; g.shadowColor = 'rgba(16,30,40,0.22)'; g.shadowBlur = 40; g.shadowOffsetY = 12; g.fill();
+  g.restore();
+  text(g, a, cx + 40, cy + 80, { size: 64, weight: 700, color: C.link });
+  text(g, b, cx + 40 + wa + 28, cy + 76, { size: 44, weight: 500, color: C.ink });
+
+  // headline
+  text(g, 'TORU', 96, 168, { size: 96, weight: 800, color: C.link });
+  text(g, 'Every fact', 96, 300, { size: 128, weight: 800, color: C.ink });
+  text(g, 'links to its', 96, 440, { size: 128, weight: 800, color: C.ink });
+  text(g, 'sentence', 96, 580, { size: 128, weight: 800, color: C.link });
+  // proof badge
+  rr(g, 96, 650, 300, 96, 48); g.fillStyle = C.ink; g.fill();
+  text(g, '15 / 15', 246, 718, { size: 56, weight: 700, color: '#fff', align: 'center', font: 'mono' });
+  text(g, 'TORU · Clinical Summary Desk · AIM Healthcare Hackathon Vienna', 96, 1032, { size: 40, weight: 600, color: C.muted });
+
+  // the buddies, surprised, looking at the sentence
+  buddies(g, 470, 955, 1.0, 0.4, { mode: 'look', surprise: 1, surpriseT: 0.22, look: [1150, 420] });
+  E.reset(g);
+};
+E.load().then(() => { window.READY = true; });
+</script>
+</body>
+</html>

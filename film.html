@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clinical Summary Desk film</title>
+<style>
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-wght-normal.woff2) format('woff2'); font-weight: 100 1000; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-ext-wght-normal.woff2) format('woff2'); font-weight: 100 1000; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'IBM Plex Mono Film'; src: url(assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'IBM Plex Mono Film'; src: url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2'); font-weight: 500; }
+  html, body { margin: 0; background: #111; color: #ccc; font: 12px system-ui, sans-serif; }
+  canvas { display: block; width: 100vw; height: auto; max-height: calc(100vh - 34px); object-fit: contain; }
+  #bar { display: flex; gap: 8px; align-items: center; padding: 6px 10px; height: 22px; }
+  #bar input { flex: 1; } #bar button { font: inherit; }
+</style>
+<script src="springs.js"></script>
+<script src="engine.js"></script>
+<script src="chapters/open-docs-end.js"></script>
+<script src="chapters/demo1.js"></script>
+<script src="chapters/demo2.js"></script>
+<script src="chapters/role-how.js"></script>
+<script src="chapters/scores-next.js"></script>
+<script src="chapters/map.js"></script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="bar"><button id="pp">pause</button><input id="scrub" type="range" min="0" max="1000" value="0"><span id="tc">0.00</span></div>
+<script>
+const { W, H } = E;
+const c = document.getElementById('c'); c.width = W; c.height = H;
+const g = c.getContext('2d');
+
+const c2 = document.createElement('canvas'); c2.width = W; c2.height = H;
+const g2 = c2.getContext('2d');
+
+function drawSection(ctx, sec, t) {
+  E.reset(ctx);
+  E.fill(ctx, E.C.bg);
+  const ch = E.CH.find((x) => x.name === sec);
+  if (ch) { ctx.save(); try { ch.draw(ctx, t); } catch (e) { console.error(sec, e); } ctx.restore(); }
+  else E.text(ctx, `${sec} · ${t.toFixed(2)} s`, W / 2, H / 2, { size: 64, align: 'center', color: E.C.muted });
+  E.reset(ctx); if (!sec.startsWith('doc')) E.subtitles(ctx, t);
+  E.reset(ctx);
+}
+
+// Transitions: the previous section's last frame leaves over the new one.
+// Into/out of the clinician clips: a dip through black. Elsewhere: a diagonal wipe led by a blue band.
+const TR = 0.5;
+window.renderFrame = (t) => {
+  const names = Object.keys(E.S);
+  const idx = names.findIndex((n) => t >= E.S[n][0] && t < E.S[n][1]);
+  const sec = names[idx >= 0 ? idx : names.length - 1];
+  drawSection(g, sec, t);
+  const prev = idx > 0 ? names[idx - 1] : null;
+  const dt = t - E.S[sec][0];
+  if (!prev || dt >= TR) return;
+  const leavingDoc = prev.startsWith('doc') && !sec.startsWith('doc');
+  if (!leavingDoc) drawSection(g2, prev, E.S[sec][0] - 0.0005);   // leaving a clip only needs the black dip
+  E.reset(g);
+  if (sec.startsWith('doc') || prev.startsWith('doc')) {
+    const p = E.clamp(dt / 0.32, 0, 1);
+    if (sec.startsWith('doc')) { g.globalAlpha = 1 - p; g.drawImage(c2, 0, 0); }
+    else { g.fillStyle = '#0b0f13'; g.globalAlpha = 1 - E.smooth(p); g.fillRect(0, 0, W, H); }
+    E.reset(g);
+    return;
+  }
+  const p = Spring.unit(dt, 'camera');
+  const slant = 260, x = -slant + (W + slant * 2) * p;   // the wipe's leading edge (bottom point)
+  g.save();
+  g.beginPath(); g.moveTo(x + slant, 0); g.lineTo(W + 10, 0); g.lineTo(W + 10, H); g.lineTo(x, H); g.closePath(); g.clip();
+  g.drawImage(c2, 0, 0);
+  g.restore();
+  g.save();
+  g.beginPath(); g.moveTo(x + slant, 0); g.lineTo(x + slant + 44, 0); g.lineTo(x + 44, H); g.lineTo(x, H); g.closePath();
+  g.fillStyle = E.C.link; g.fill();
+  g.restore();
+  E.reset(g);
+};
+
+E.load().then(() => {
+  window.READY = true;
+  if (navigator.webdriver) return;
+  const audio = new Audio('audio/mix.wav'); let hasAudio = false;
+  audio.addEventListener('canplay', () => { hasAudio = true; });
+  let playing = true, t0 = performance.now(), tAt = 0;
+  const pp = document.getElementById('pp'), scrub = document.getElementById('scrub'), tc = document.getElementById('tc');
+  const now = () => (playing ? (tAt + (performance.now() - t0) / 1000) % window.FILM_DURATION : tAt);
+  pp.onclick = () => { if (playing) { tAt = now(); playing = false; audio.pause(); } else { t0 = performance.now(); playing = true; if (hasAudio) { audio.currentTime = tAt; audio.play().catch(() => {}); } } pp.textContent = playing ? 'pause' : 'play'; };
+  scrub.oninput = () => { tAt = (scrub.value / 1000) * window.FILM_DURATION; t0 = performance.now(); if (hasAudio) audio.currentTime = tAt; };
+  const loop = () => { const t = now(); window.renderFrame(t); scrub.value = Math.round((t / window.FILM_DURATION) * 1000); tc.textContent = `${t.toFixed(2)} / ${window.FILM_DURATION.toFixed(1)} s`; requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+});
+</script>
+</body>
+</html>

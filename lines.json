@@ -1,0 +1,203 @@
+{
+  "voices": {
+    "N": "Sulafat",
+    "H": "Gacrux",
+    "U": "Achernar",
+    "K": "Orus"
+  },
+  "styles": {
+    "N": "Speak naturally, like a real person explaining something to a colleague: relaxed and warm, conversational rhythm, small natural pauses, gentle emphasis on the key words. Not an announcer, not a commercial. Say only the words after the colon:",
+    "H": "Speak naturally, like a real senior anaesthesiologist answering a question in a quiet interview: relaxed, sincere, conversational, with a small thoughtful pause. Not read aloud, not acted. Say only the words after the colon:",
+    "U": "Speak naturally, like a real experienced surgeon answering a question in a quiet interview: calm, sincere, conversational, slightly understated. Not read aloud, not acted. Say only the words after the colon:",
+    "K": "Speak naturally, like a real head of anaesthesiology talking candidly on a phone call: calm, practical, matter-of-fact, conversational. Not read aloud, not acted. Say only the words after the colon:"
+  },
+  "lines": [
+    {
+      "id": "n01",
+      "who": "N",
+      "text": "Eight German letters. One patient.",
+      "keys": [
+        "Eight",
+        "One"
+      ]
+    },
+    {
+      "id": "n02",
+      "who": "N",
+      "text": "Two minutes to find what matters before surgery. Meet TORU.",
+      "keys": [
+        "TORU"
+      ],
+      "say": "Two minutes to find what matters before surgery. Meet Toru."
+    },
+    {
+      "id": "h01b",
+      "who": "H",
+      "text": "Blood thinners, allergies, heart function. I can see everything, and also where it came from, which is nice.",
+      "recorded": true
+    },
+    {
+      "id": "a01",
+      "who": "N",
+      "text": "In TORU, enter the patient, then the task.",
+      "keys": [
+        "patient",
+        "task"
+      ],
+      "say": "In Toru, enter the patient, then the task."
+    },
+    {
+      "id": "a02",
+      "who": "N",
+      "text": "Two seconds later: one screen.",
+      "keys": [
+        "Two seconds"
+      ]
+    },
+    {
+      "id": "a03",
+      "who": "N",
+      "text": "Contradictions on the left. What the task needs, in the centre. The original letters, on the right.",
+      "keys": [
+        "Contradictions",
+        "centre",
+        "original letters"
+      ]
+    },
+    {
+      "id": "a04",
+      "who": "N",
+      "text": "For example: allergies, blood thinner, airway and heart function come first.",
+      "keys": [
+        "first"
+      ]
+    },
+    {
+      "id": "a05",
+      "who": "N",
+      "text": "EF sixty percent. Where from? One click shows the exact sentence in the original letter.",
+      "keys": [
+        "EF",
+        "One click",
+        "exact sentence"
+      ]
+    },
+    {
+      "id": "a06",
+      "who": "N",
+      "text": "The records disagree: left or right carotid? Both sources, side by side.",
+      "keys": [
+        "disagree",
+        "side by side"
+      ]
+    },
+    {
+      "id": "a07",
+      "who": "N",
+      "text": "Missing information is explicit: previous anaesthesia, not documented.",
+      "keys": [
+        "not documented"
+      ]
+    },
+    {
+      "id": "a08",
+      "who": "N",
+      "text": "Browse every letter by date, or every fact by type.",
+      "keys": [
+        "by date",
+        "by type"
+      ]
+    },
+    {
+      "id": "u01",
+      "who": "U",
+      "text": "I don't have to trust a summary. I read the original myself.",
+      "recorded": true
+    },
+    {
+      "id": "r01",
+      "who": "N",
+      "text": "Change the role: the GP gets diabetes drugs, HbA1c and a weight loss.",
+      "keys": [
+        "role",
+        "GP",
+        "calculated"
+      ]
+    },
+    {
+      "id": "w01",
+      "who": "N",
+      "text": "TORU is not a mock-up. It has a working backend. Names removed before any AI call, data encrypted.",
+      "keys": [
+        "working backend",
+        "encrypted",
+        "checked"
+      ],
+      "say": "Toru is not a mock-up: a working backend. Names removed before any AI call, data encrypted."
+    },
+    {
+      "id": "s01",
+      "who": "N",
+      "text": "We tested TORU end to end on the running system: fifteen of fifteen correct.",
+      "keys": [
+        "fifteen of fifteen"
+      ],
+      "say": "We tested Toru end to end on the running system: fifteen of fifteen correct."
+    },
+    {
+      "id": "s02",
+      "who": "N",
+      "text": "One AI call with the whole record: six. Simple rules: eight.",
+      "keys": [
+        "six",
+        "eight"
+      ]
+    },
+    {
+      "id": "s03",
+      "who": "N",
+      "text": "Zero false alarms. Every fact traceable, none invented. Typical answer: under two seconds.",
+      "keys": [
+        "Zero",
+        "none invented"
+      ],
+      "say": "Zero false alarms. Every fact traceable, none invented. Typical answer: under two seconds."
+    },
+    {
+      "id": "s04",
+      "who": "N",
+      "text": "Why an LLM? On unseen requests, it lifts complete checklists from half to two thirds.",
+      "keys": [
+        "half",
+        "two thirds"
+      ],
+      "say": "Why an LLM? On unseen requests, it lifts complete checklists from half to two thirds."
+    },
+    {
+      "id": "x01",
+      "who": "N",
+      "text": "Not working yet: thirteen percent of unusual requests still miss an item. And there is no FHIR link.",
+      "keys": [
+        "Not working yet"
+      ],
+      "say": "Not working yet: thirteen percent of unusual requests still miss an item. And there is no FHIR link."
+    },
+    {
+      "id": "k01",
+      "who": "K",
+      "text": "Seeing only relevant info is useful. It just needs to be nicely ordered, so we don't get lost."
+    },
+    {
+      "id": "x02",
+      "who": "N",
+      "text": "Doctors in Austria, Slovakia and Switzerland tried TORU, and want it. Next: a supervised pilot.",
+      "keys": [
+        "Austria",
+        "Slovakia",
+        "Switzerland",
+        "Next"
+      ],
+      "say": "Doctors in Austria, Slovakia and Switzerland tried Toru, and want it. Next: a supervised pilot."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-wght-normal.woff2) format('woff2'); font-weight: 100 1000; }
+  @font-face { font-family: 'IBM Plex Mono Film'; src: url(assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); font-weight: 400; }
+  html,body{margin:0;background:#111}
+</style>
+<script src="springs.js"></script><script src="engine.js"></script></head>
+<body><canvas id="c"></canvas><script>
+const c = document.getElementById('c'); c.width = 1920; c.height = 1080; const g = c.getContext('2d');
+window.renderFrame = (t) => {
+  E.reset(g); E.fill(g, E.C.bg);
+  const r = E.plate(g, 'sit1-screen', { cx: 700, cy: 300, vw: 900 }, { x: 760, y: 120, w: 1060, h: 700 }, { radius: 14, shadow: 40 });
+  const [tx, ty] = r.map(E.BOX.sit1.thrombo.x, E.BOX.sit1.thrombo.y);
+  E.ring(g, tx, ty, E.BOX.sit1.thrombo.w * r.s, E.BOX.sit1.thrombo.h * r.s, 1);
+  E.cursor(g, tx + 120, ty + 14, 0);
+  const modes = ['idle', 'searching', 'success', 'error', 'surprised'];
+  modes.forEach((m, i) => { E.buddies(g, 40 + i * 0, 1040, 1.4, t, { mode: m === 'surprised' ? 'idle' : m, surprise: m === 'surprised' ? 1 : 0, surpriseT: 0.2, look: [tx, ty] }); });
+  E.buddies(g, 60, 1040, 1.6, t, { mode: ['idle','searching','success','error','idle'][Math.floor(t)%5], surprise: Math.floor(t)%5===4?1:0, surpriseT: 0.22, look: [tx, ty] });
+  E.text(g, 'Every fact links to its sentence', 96, 160, { size: 72, weight: 700 });
+  E.criterion(g, 1, 'Would a clinician trust this screen?', 1, 0, 10);
+  E.text(g, `mode ${['idle','searching','success','error','surprised'][Math.floor(t)%5]}  dur ${window.FILM_DURATION?.toFixed(1)}`, 96, 260, { size: 36, font: 'mono', color: E.C.muted });
+};
+E.load().then(() => { E.reset(g); window.READY = true; });
+</script></body></html>
