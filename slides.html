@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TORU slides</title>
+<style>
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-wght-normal.woff2) format('woff2'); font-weight: 100 1000; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'DM Sans Film'; src: url(assets/fonts/dm-sans-latin-ext-wght-normal.woff2) format('woff2'); font-weight: 100 1000; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'IBM Plex Mono Film'; src: url(assets/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'IBM Plex Mono Film'; src: url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2'); font-weight: 500; }
+  html, body { margin: 0; height: 100%; background: #0b0f13; color: #c9d3da; font: 14px system-ui, sans-serif; overflow: hidden; }
+  #stage { position: fixed; inset: 0; display: grid; place-items: center; cursor: pointer; }
+  canvas { width: min(100vw, calc(100vh * 16 / 9)); height: auto; display: block; }
+  #hud { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px; padding: 8px 14px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55)); opacity: 0; transition: opacity .25s; }
+  body:hover #hud, #hud:focus-within { opacity: 1; }
+  #hud button { font: inherit; color: #fff; background: rgba(255,255,255,0.12); border: 0; border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  #hud button:hover { background: rgba(255,255,255,0.22); }
+  #title { flex: 1; color: #fff; }
+  #count { font-variant-numeric: tabular-nums; }
+  #dots { position: fixed; top: 0; left: 0; height: 4px; background: #5aa9ff; transition: width .3s; }
+  #help { position: fixed; top: 10px; right: 14px; color: rgba(255,255,255,0.55); font-size: 12px; }
+</style>
+<script src="springs.js"></script>
+<script src="engine.js"></script>
+<script src="chapters/open-docs-end.js"></script>
+<script src="chapters/demo1.js"></script>
+<script src="chapters/demo2.js"></script>
+<script src="chapters/role-how.js"></script>
+<script src="chapters/scores-next.js"></script>
+<script src="chapters/map.js"></script>
+</head>
+<body>
+<div id="dots"></div>
+<div id="stage"><canvas id="c" aria-label="TORU presentation slide"></canvas></div>
+<div id="help">→ / click: next · ← back · F fullscreen · S subtitles</div>
+<div id="hud">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <button id="next" aria-label="Next slide">→</button>
+  <span id="title"></span>
+  <span id="count"></span>
+</div>
+<script>
+const { W, H } = E;
+const c = document.getElementById('c'); c.width = W; c.height = H;
+const g = c.getContext('2d');
+const c2 = document.createElement('canvas'); c2.width = W; c2.height = H;
+const g2 = c2.getContext('2d');
+let showSubs = true;
+
+// ---- the film's own frame renderer (same as film.html): section, subtitles, transitions ----
+function drawSection(ctx, sec, t) {
+  E.reset(ctx);
+  E.fill(ctx, E.C.bg);
+  const ch = E.CH.find((x) => x.name === sec);
+  if (ch) { ctx.save(); try { ch.draw(ctx, t); } catch (e) { console.error(sec, e); } ctx.restore(); }
+  E.reset(ctx); if (showSubs && !sec.startsWith('doc')) E.subtitles(ctx, t);
+  E.reset(ctx);
+}
+const TR = 0.5;
+function renderFrame(t) {
+  const names = Object.keys(E.S);
+  const idx = names.findIndex((n) => t >= E.S[n][0] && t < E.S[n][1]);
+  const sec = names[idx >= 0 ? idx : names.length - 1];
+  drawSection(g, sec, t);
+  const prev = idx > 0 ? names[idx - 1] : null;
+  const dt = t - E.S[sec][0];
+  if (!prev || dt >= TR) return;
+  const leavingDoc = prev.startsWith('doc') && !sec.startsWith('doc');
+  if (!leavingDoc) drawSection(g2, prev, E.S[sec][0] - 0.0005);
+  E.reset(g);
+  if (sec.startsWith('doc') || prev.startsWith('doc')) {
+    const p = E.clamp(dt / 0.32, 0, 1);
+    if (sec.startsWith('doc')) { g.globalAlpha = 1 - p; g.drawImage(c2, 0, 0); }
+    else { g.fillStyle = '#0b0f13'; g.globalAlpha = 1 - E.smooth(p); g.fillRect(0, 0, W, H); }
+    E.reset(g);
+    return;
+  }
+  const p = Spring.unit(dt, 'camera');
+  const slant = 260, x = -slant + (W + slant * 2) * p;
+  g.save(); g.beginPath(); g.moveTo(x + slant, 0); g.lineTo(W + 10, 0); g.lineTo(W + 10, H); g.lineTo(x, H); g.closePath(); g.clip();
+  g.drawImage(c2, 0, 0); g.restore();
+  g.save(); g.beginPath(); g.moveTo(x + slant, 0); g.lineTo(x + slant + 44, 0); g.lineTo(x + 44, H); g.lineTo(x, H); g.closePath();
+  g.fillStyle = E.C.link; g.fill(); g.restore();
+  E.reset(g);
+}
+
+// ---- slides: each one plays its stretch of the film, then holds on the finished frame ----
+// [title, line it ends on (or a function of the timeline), needs the app screenshots]
+const PLAN = [
+  ['Eight letters, two minutes · Meet TORU', 'n02'],
+  ['MUDr. Monika Hromadová · anaesthesiologist', 'h01b'],
+  ['Import the patient, type the task', () => E.T.a02.s - 0.75, true],
+  ['Two seconds later: one screen', 'a02', true],
+  ['Contradictions · task · original letters', 'a03', true],
+  ['What comes first for this task', 'a04', true],
+  ['One click to the exact sentence', 'a05', true],
+  ['The records disagree: both sources', 'a06', true],
+  ['Missing information is explicit', 'a07', true],
+  ['Every letter by date, every fact by type', 'a08', true],
+  ['MUDr. Iveta Urban · surgeon', 'u01'],
+  ['Change the role: the GP view', 'r01'],
+  ['Built · running · secured', 'w01'],
+  ['15 of 15 correct, end to end', 's01'],
+  ['Against two baselines', 's02'],
+  ['False alarms, traceability, speed', 's03'],
+  ['Understanding unseen requests', 's04'],
+  ['Not working yet', 'x01'],
+  ['MUDr. Dalibor Kolieska · head of anaesthesiology', 'k01'],
+  ['Austria, Slovakia, Switzerland · next: a pilot', 'x02'],
+  ['TORU', () => E.S.end[1] - 0.05],
+];
+let SLIDES = [];   // [{title, hold}]
+function buildSlides() {
+  const ids = Object.keys(E.T);
+  const hasPlates = Boolean(E.P && E.P['sit1-screen']);
+  SLIDES = PLAN.filter(([, , plates]) => !plates || hasPlates).map(([title, end]) => {
+    let hold;
+    if (typeof end === 'function') hold = end();
+    else {
+      const L = E.T[end], next = E.T[ids[ids.indexOf(end) + 1]];
+      // stay inside the line's own section, clear of the transition into the next one
+      const sec = Object.values(E.S).find(([a, b]) => L.s >= a && L.s < b) ?? [0, Infinity];
+      hold = Math.min(L.e + 0.35, sec[1] - 0.08, next ? next.s - 0.05 : Infinity);
+    }
+    return { title, hold };
+  });
+}
+
+let cur = 0, from = 0, to = 0, t0 = 0, playing = false;
+const $ = (id) => document.getElementById(id);
+function hud() {
+  $('title').textContent = SLIDES[cur].title;
+  $('count').textContent = `${cur + 1} / ${SLIDES.length}`;
+  $('dots').style.width = `${((cur + 1) / SLIDES.length) * 100}%`;
+  const h = '#' + (cur + 1); if (location.hash !== h) history.replaceState(null, '', h);
+}
+function go(k, animate) {
+  k = Math.max(0, Math.min(SLIDES.length - 1, k));
+  // moving one slide forward plays the film between the two holds; any other jump shows the held frame
+  if (animate && k === cur + 1) { from = SLIDES[cur].hold; to = SLIDES[k].hold; t0 = performance.now(); playing = true; }
+  else { playing = false; renderFrame(SLIDES[k].hold); }
+  cur = k; hud();
+}
+function next() {
+  if (playing) { playing = false; renderFrame(to); return; }   // a click during playback finishes the slide
+  go(cur + 1, true);
+}
+function prev() { go(cur - 1, false); }
+function loop() {
+  if (playing) {
+    const t = from + (performance.now() - t0) / 1000;
+    if (t >= to) { playing = false; renderFrame(to); } else renderFrame(t);
+  }
+  requestAnimationFrame(loop);
+}
+
+E.load().then(() => {
+  buildSlides();
+  const start = Math.max(0, Math.min(SLIDES.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+  if (start === 0) { from = 0; to = SLIDES[0].hold; t0 = performance.now(); playing = true; cur = 0; hud(); }
+  else go(start, false);
+  requestAnimationFrame(loop);
+  window.addEventListener('hashchange', () => { const k = (parseInt(location.hash.slice(1), 10) || 1) - 1; if (k !== cur) go(k, false); });
+  $('stage').addEventListener('click', next);
+  $('next').addEventListener('click', (e) => { e.stopPropagation(); next(); });
+  $('prev').addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') go(0, false);
+    else if (e.key === 'End') go(SLIDES.length - 1, false);
+    else if (e.key === 'f' || e.key === 'F') { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
+    else if (e.key === 's' || e.key === 'S') { showSubs = !showSubs; if (!playing) renderFrame(SLIDES[cur].hold); }
+  });
+});
+</script>
+</body>
+</html>
